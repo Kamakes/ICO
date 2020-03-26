@@ -25,6 +25,8 @@ public class City {
 	// 
 	public String toString(){return this.name;}
 	
+	
+	//Distance en Km entre 2 Villes 
 	public double measureDistance(City city){
 		double deltaLatitude = city.getLatitude() - this.getLatitude(); 
 		double deltaLongitude = city.getLongitude()-this.getLongitude(); 
@@ -32,8 +34,5 @@ public class City {
 		return EARTH_EQUATORIAL_RADIUS*2D*Math.atan2(Math.sqrt(a), Math.sqrt(1D-a));
 		
 	}
-	
-	//Distance en Km entre 2 Villes 
-	//test
 	
 }
