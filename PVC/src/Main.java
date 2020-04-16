@@ -40,12 +40,12 @@ public class Main {
 		cities.add(Marseille); 
 		cities.add(Dijon);
 		cities.add(Bordeaux);
-		//cities.add(Rennes);
-		//cities.add(Brest);
-		//cities.add(Toulouse);
-		//cities.add(Strasbourg);
-		//cities.add(Nice);
-		//cities.add(Lille);
+		cities.add(Rennes);
+		cities.add(Brest);
+		cities.add(Toulouse);
+		cities.add(Strasbourg);
+		cities.add(Nice);
+		cities.add(Lille);
 		return cities;
 	}
 	
@@ -89,7 +89,7 @@ public class Main {
 		static int menu() {
 			System.out.println();
 			System.out.println("Pour tester l'algorithme tabou ...................... tapez 1");
-			System.out.println("Pour tester l'algorithme RS ......................... tapez 2");
+			System.out.println("Pour tester l'algorithme RC ......................... tapez 2");
 			System.out.println("Pour tester l'algorithme génétique .................. tapez 3");
 			System.out.println("Pour comparer les 3 algorithme....................... tapez 4");
 			System.out.println("Pour tester la combinaison des algorithmes  ......... tapez 5");
@@ -123,21 +123,21 @@ epilogue("[Fin de testtabou]");
 }
 
 //-------------------------------------------------------------------- //
-//							Algorithme RS								//
+//							Algorithme RC								//
 //-------------------------------------------------------------------- //
 static void testRC() {
 //RC
 	ArrayList<City> cities = creationroute();
 	Route Route1 = new Route(cities);
 	System.out.println(Route1.toString());
-	//System.out.println(Route1.getTotalDistance());
+	System.out.println(Route1.getTotalDistance());
 	
-	SolutionRC solution1 = new SolutionRC(1000, 1500, 0.1);
+	SolutionRC solution1 = new SolutionRC(100, 0.995);
 	Route s_f = solution1.RC(Route1); 
 	System.out.print(s_f);
 	System.out.print(s_f.getTotalDistance());
 
-epilogue("[Fin de testRC]");
+epilogue("\n[Fin de testRC]\n");
 }
 //-------------------------------------------------------------------- //
 //							Algorithme AG								//

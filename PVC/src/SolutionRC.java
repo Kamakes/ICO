@@ -4,26 +4,27 @@ import java.util.Random;
 public class SolutionRC {
 	
 	private double T_init;
-	private double n; 
 	private double coolingRate;
 	
 	private Route previousRoute ;
+	private int iterations;
 	
-	public SolutionRC(double T_init, double n, double coolingRate) {
-		this.T_init = T_init;
-		this.n = n; 
+	public SolutionRC(double T_init, double coolingRate) {
+		this.T_init = T_init; 
 		this.coolingRate = coolingRate; 
 	}
-	
-	
+
 	public Route RC(Route route) {
+		
+		iterations = 0; 
 		double t = T_init ;
 		
 		double best_distance = route.getTotalDistance(); // Distance initiale
 		Route s = route ; 
 		
-		for (int i = 0; i<n ; i++) {
-			swapCities(s);
+		while (t>0.001) {
+			iterations +=1 ;
+			s = swapCities(s);
 			double current_distance = s.getTotalDistance(); 
 			if (current_distance < best_distance) {
 				best_distance = current_distance ; 
@@ -33,22 +34,22 @@ public class SolutionRC {
 			}
 			
 			t= coolingRate*t ; 
-			
-		}
-		return s;
+		} 	
+		return s ;
 	}
 	
-	public void swapCities(Route r) {
+	public Route swapCities(Route r) {
 		Random rand = new Random();
 		ArrayList<City> cities = r.getCities(); 
 		int a = rand.nextInt(cities.size());
 		int b = rand.nextInt(cities.size());
 
-		previousRoute = r ; 
+		previousRoute = new Route(r) ; 
 		City x = cities.get(a);
 		City y = cities.get(b);
 		r.getCities().set(a,y);
 		r.getCities().set(b,x);
+		return r; 
 		 	
 	}
 
@@ -59,6 +60,12 @@ public class SolutionRC {
 	
 	//Get Methods : 
 	public double T_init() {return this.T_init;} 
-	public double n(){return this.n;} 
 	public double coolingRate(){return this.coolingRate;}
+	public double number_iterations() {return this.iterations;}
 }
+
+
+
+
+
+
