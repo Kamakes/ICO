@@ -15,48 +15,46 @@ public class SolutionRC {
 		this.coolingRate = coolingRate; 
 	}
 	
-
+	
 	public Route RC(Route route) {
-		
 		double t = T_init ;
 		
 		double best_distance = route.getTotalDistance(); // Distance initiale
 		Route s = route ; 
 		
 		for (int i = 0; i<n ; i++) {
-			s = swapCities(s);
+			swapCities(s);
 			double current_distance = s.getTotalDistance(); 
-			
 			if (current_distance < best_distance) {
-				
 				best_distance = current_distance ; 
 			}
 			else if (Math.exp((best_distance - current_distance)/t) < Math.random()) {
 				s = revertSwap();
 			}
+			
 			t= coolingRate*t ; 
 			
 		}
 		return s;
 	}
 	
-	public Route swapCities(Route r) {
+	public void swapCities(Route r) {
 		Random rand = new Random();
 		ArrayList<City> cities = r.getCities(); 
 		int a = rand.nextInt(cities.size());
 		int b = rand.nextInt(cities.size());
-	
-		previousRoute = new Route(r) ; 
+
+		previousRoute = r ; 
 		City x = cities.get(a);
 		City y = cities.get(b);
 		r.getCities().set(a,y);
 		r.getCities().set(b,x);
-		return r; 
 		 	
 	}
 
+
 	public Route revertSwap() {
-		return previousRoute ; 	
+		return previousRoute; 	
 	}
 	
 	//Get Methods : 

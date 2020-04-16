@@ -3,7 +3,8 @@ import java.util.Arrays;
 import java.util.Collections;
 
 public class Route { 
-	
+	private double fitness = 0;
+	private boolean siFitnessChanged = true;
 	private ArrayList<City> cities = new ArrayList<City>();
 
 	//constructeurs 
@@ -18,9 +19,22 @@ public class Route {
 		Collections.shuffle(this.cities); 
 	}
 	
+	
 	public String toString(){ return Arrays.toString(cities.toArray());}
 
 	public ArrayList<City> getCities(){ return this.cities;}
+	
+	public Route(SolutionAG ag) {
+		ag.getInitialRoute().forEach(x -> cities.add(null));
+	}
+	
+	public double getFitness() {
+		if (siFitnessChanged == true) {
+			fitness = (1 / getTotalDistance()) * 1000;
+			siFitnessChanged = false;
+		}
+		return fitness;
+	}
 
 	public double getTotalDistance(){
 		int citiesSize = this.cities.size();
