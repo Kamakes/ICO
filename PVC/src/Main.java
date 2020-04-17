@@ -152,14 +152,13 @@ public class Main {
 		Population population = new Population(SolutionAG.POPULATION_Size, cities);
 		population.sortRouteByFitness();
 		SolutionAG ag = new SolutionAG(cities);
-		int generationNumbre = 0;
-		generationNumbre++;
+		int generationNumbre= 1;
 		while (generationNumbre < SolutionAG.NUM_GENERATIONS) {
 			generationNumbre++;
 			population = ag.evolve(population);
 			population.sortRouteByFitness();
 		}
-		System.out.println(" la meilleure route trouvee est :" + population.getRoutes().get(0));
+		System.out.println(population.getRoutes().get(0));
 		System.out.println(" Distance Totale est :"
 				+ String.format("%.2f", population.getRoutes().get(0).getTotalDistance()) + "Kms");
 		epilogue("[Fin de testAG]");

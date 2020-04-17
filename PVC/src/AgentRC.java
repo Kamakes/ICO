@@ -1,6 +1,6 @@
 import java.io.IOException;
-import java.io.Serializable;
-
+import java.util.Arrays;
+import java.util.ArrayList;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.*;
@@ -10,19 +10,16 @@ import jade.wrapper.ControllerException;
 
 public class AgentRC extends Agent {
 	
-	private double critere; 
 	private Route best_route; 
 	
 	@Override
 	protected void setup() {
 		Object[] args = getArguments(); 
 		if(args.length==1) {
-			//critere = (double)args[0] ;
-			best_route = (Route)args[0]; 
+			best_route = (Route) args[0]; 
 			System.out.println("Agent RC : " + this.getAID().getName());
-			//System.out.println("\n j'ai trouvé la distance : "+ critere); 
+			System.out.println("\n j'ai trouvé la distance : "+ best_route.getTotalDistance()); 
 			System.out.println("\n Ce qui correspond à la route : " + best_route +"\n"); 
-			
 			// TODO Auto-generated method stub
 			ACLMessage msg = new ACLMessage(ACLMessage.REQUEST); 
 			msg.addReceiver(new AID("Gen", AID.ISLOCALNAME)); 
@@ -33,15 +30,12 @@ public class AgentRC extends Agent {
 				e.printStackTrace();
 			}
 			send(msg); 
-			
-			//addBehaviour(new MyTickerBehaviour(this, 1000)); 
-				
+			//addBehaviour(new MyTickerBehaviour(this, 1000)); 	
 		}
 		else {
 			doDelete();
 		}	
 	}
-	
 	@Override
 	protected void takeDown() {
 		System.out.println("Destruction de l'agent RC");
