@@ -146,11 +146,24 @@ public class Main {
 //-------------------------------------------------------------------- //
 //							Algorithme AG								//
 //-------------------------------------------------------------------- //
+<<<<<<< HEAD
 	static void testAG() {
 		ArrayList<City> cities = creationroute();
 		Route Route1 = new Route(cities);
 		Population population = new Population(SolutionAG.POPULATION_Size, cities);
+=======
+static void testAG() {
+	ArrayList<City> cities = creationroute();
+	Route Route1 = new Route(cities);
+	Population population = new Population(SolutionAG.POPULATION_Size, cities);
+	population.sortRouteByFitness();
+	SolutionAG ag = new SolutionAG(cities);
+	int generationNumbre = 1;
+	while (generationNumbre < SolutionAG.NUM_GENERATIONS) {
+		population = ag.evolve(population);
+>>>>>>> refs/remotes/origin/master
 		population.sortRouteByFitness();
+<<<<<<< HEAD
 		SolutionAG ag = new SolutionAG(cities);
 		int generationNumbre= 1;
 		while (generationNumbre < SolutionAG.NUM_GENERATIONS) {
@@ -162,9 +175,37 @@ public class Main {
 		System.out.println(" Distance Totale est :"
 				+ String.format("%.2f", population.getRoutes().get(0).getTotalDistance()) + "Kms");
 		epilogue("[Fin de testAG]");
+=======
+		generationNumbre++;
+}
+System.out.println(population.getRoutes().get(0));
+System.out.println(" Distance Totale est :"
+		+ String.format("%.2f", population.getRoutes().get(0).getTotalDistance()) + "Kms");
+}
+>>>>>>> refs/remotes/origin/master
 
 	}
 
+<<<<<<< HEAD
+=======
+public static void printHeading(int generationNumbre) {
+	ArrayList<City> cities = creationroute();
+	Route Route1 = new Route(cities);
+	System.out.println("> Generation #" + generationNumbre);
+	String headingColumn1 = "Route";
+	String headingColumns = "Fitness |  Distance";
+	int cityNames = 0;
+	for (int x = 0; x < cities.size(); x++)
+		cityNames += cities.get(x).getName().length();
+	int arrayLength = cityNames + cities.size() * 2;
+	int partialLength = (arrayLength - headingColumn1.length() / 2);
+
+	if ((arrayLength % 2) == 0)
+		System.out.println("");
+	System.out.println("|" + headingColumns);
+	cityNames += headingColumns.length() + 3;
+	System.out.println("");
+>>>>>>> refs/remotes/origin/master
 
 //-------------------------------------------------------------------- //
 //							Comparaison								//
