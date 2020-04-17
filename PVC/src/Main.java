@@ -148,16 +148,13 @@ static void testAG() {
 	Population population = new Population(SolutionAG.POPULATION_Size, cities);
 	population.sortRouteByFitness();
 	SolutionAG ag = new SolutionAG(cities);
-	int generationNumbre = 0;
-	Main.printPopulation(population);
-	Main.printHeading(generationNumbre++);
+	int generationNumbre = 1;
 	while (generationNumbre < SolutionAG.NUM_GENERATIONS) {
-		Main.printHeading(generationNumbre++);
 		population = ag.evolve(population);
 		population.sortRouteByFitness();
-		Main.printPopulation(population);
+		generationNumbre++;
 }
-System.out.println(" la meilleure route trouvee est :" + population.getRoutes().get(0));
+System.out.println(population.getRoutes().get(0));
 System.out.println(" Distance Totale est :"
 		+ String.format("%.2f", population.getRoutes().get(0).getTotalDistance()) + "Kms");
 }
@@ -181,14 +178,11 @@ public static void printHeading(int generationNumbre) {
 		cityNames += cities.get(x).getName().length();
 	int arrayLength = cityNames + cities.size() * 2;
 	int partialLength = (arrayLength - headingColumn1.length() / 2);
-	for (int x = 0; x < partialLength; x++)
-		System.out.println("");
+
 	if ((arrayLength % 2) == 0)
 		System.out.println("");
 	System.out.println("|" + headingColumns);
 	cityNames += headingColumns.length() + 3;
-	for (int x = 0; x < cityNames + cities.size() * 2; x++)
-		System.out.println("-");
 	System.out.println("");
 
 epilogue("[Fin de testAG]");
