@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import java.util.Arrays; 
 import java.util.Collections;
 
-public class Route { 
+public class Route implements Serializable { 
 	private double fitness = 0;
 	private boolean siFitnessChanged = true;
 	private ArrayList<City> cities = new ArrayList<City>();
@@ -36,7 +36,8 @@ public class Route {
 		}
 		return fitness;
 	}
-
+	
+	
 	public double getTotalDistance(){
 		int citiesSize = this.cities.size();
 		int s = 0 ; 

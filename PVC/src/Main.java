@@ -24,7 +24,6 @@ public class Main {
 
 	public static ArrayList<City> creationroute() {
 
-		//Declaration villes
 		City Paris = new City("Paris", 48.8534, 2.3488);
 		City Lyon = new City("Lyon", 45.75, 4.85);
 		City Nantes = new City("Nantes", 47.2173, -1.5534); 
@@ -37,6 +36,15 @@ public class Main {
 		City Strasbourg = new City("Strasbourg", 48.522, 7.727);
 		City Nice = new City("Nice", 43.702, 7.315);
 		City Lille = new City("Lille", 50.657, 30.004);
+		City Angers = new City("Angers", 47.4667, -0.55);
+		City Annecy = new City("Annecy", 45.9, 6.1167); 
+		City Belfort = new City("Belfort", 47.6333, 6.8667);
+		City Caen = new City("Caen", 47.3167, 5.0167);
+		City Chartres = new City("Chartres", 48.4469, 1.4892);
+		City Grenoble = new City("Grenoble", 45.1667, 5.7167);
+		City Montpellier = new City("Montpellier", 43.6, 3.8833);
+		City Metz = new City("Metz", 49.1333, 6.16667); 
+		City Nancy = new City("Nancy", 48.683, 6.2); 
 		
 		//creation chemin
 		ArrayList<City> cities = new ArrayList<City>();
@@ -49,9 +57,18 @@ public class Main {
 		cities.add(Rennes);
 		cities.add(Brest);
 		cities.add(Toulouse);
-		cities.add(Strasbourg);
+		/*cities.add(Strasbourg);
 		cities.add(Nice);
 		cities.add(Lille);
+		cities.add(Angers);
+		cities.add(Annecy);
+		cities.add(Belfort);
+		cities.add(Caen);
+		cities.add(Chartres);
+		cities.add(Grenoble);
+		cities.add(Montpellier);
+		cities.add(Metz);
+		cities.add(Nancy);*/
 		return cities;
 	}
 	
@@ -59,14 +76,10 @@ public class Main {
 		//				V A R I A B L E S   D E   C L A S S E					 //
 		// --------------------------------------------------------------------- //
 	public static void main(String[] args) {
-			try {
-				prologue();
-			} catch (UnknownHostException e) {
-				System.err.println(e);
-			}
+		
 			
 			int choix;
-			do {
+			//do {
 				choix = menu();
 				switch (choix) {
 					case 0 : break;
@@ -80,10 +93,9 @@ public class Main {
 					default:
 						System.out.println("Choix incorrect. Recommencez !\n\r"); 
 						break;
-				}
-			} while (choix != 0);
+			//	} 
+			} 
 				
-			epilogue("\n[That's all folks!]");
 	}
 		// -------------------------------------------------------------------- //
 
@@ -123,7 +135,6 @@ public class Main {
 		solution.optimiserTabou();
 		System.out.println(solution.getBestPath().toString());
 		System.out.println(solution.getBestPath().getTotalDistance());
-	epilogue("[Fin de testtabou]");
 	}
 
 //-------------------------------------------------------------------- //
@@ -141,71 +152,32 @@ public class Main {
 		System.out.print(s_f);
 		System.out.print(s_f.getTotalDistance());
 	
-	epilogue("\n[Fin de testRC]\n");
 	}
 //-------------------------------------------------------------------- //
 //							Algorithme AG								//
 //-------------------------------------------------------------------- //
-<<<<<<< HEAD
 	static void testAG() {
 		ArrayList<City> cities = creationroute();
 		Route Route1 = new Route(cities);
 		Population population = new Population(SolutionAG.POPULATION_Size, cities);
-=======
-static void testAG() {
-	ArrayList<City> cities = creationroute();
-	Route Route1 = new Route(cities);
-	Population population = new Population(SolutionAG.POPULATION_Size, cities);
-	population.sortRouteByFitness();
-	SolutionAG ag = new SolutionAG(cities);
-	int generationNumbre = 1;
-	while (generationNumbre < SolutionAG.NUM_GENERATIONS) {
-		population = ag.evolve(population);
->>>>>>> refs/remotes/origin/master
+
 		population.sortRouteByFitness();
-<<<<<<< HEAD
 		SolutionAG ag = new SolutionAG(cities);
-		int generationNumbre= 1;
+		int generationNumbre = 1;
 		while (generationNumbre < SolutionAG.NUM_GENERATIONS) {
-			generationNumbre++;
 			population = ag.evolve(population);
 			population.sortRouteByFitness();
+			generationNumbre++;
+
 		}
+		
 		System.out.println(population.getRoutes().get(0));
 		System.out.println(" Distance Totale est :"
 				+ String.format("%.2f", population.getRoutes().get(0).getTotalDistance()) + "Kms");
-		epilogue("[Fin de testAG]");
-=======
-		generationNumbre++;
-}
-System.out.println(population.getRoutes().get(0));
-System.out.println(" Distance Totale est :"
-		+ String.format("%.2f", population.getRoutes().get(0).getTotalDistance()) + "Kms");
-}
->>>>>>> refs/remotes/origin/master
 
 	}
 
-<<<<<<< HEAD
-=======
-public static void printHeading(int generationNumbre) {
-	ArrayList<City> cities = creationroute();
-	Route Route1 = new Route(cities);
-	System.out.println("> Generation #" + generationNumbre);
-	String headingColumn1 = "Route";
-	String headingColumns = "Fitness |  Distance";
-	int cityNames = 0;
-	for (int x = 0; x < cities.size(); x++)
-		cityNames += cities.get(x).getName().length();
-	int arrayLength = cityNames + cities.size() * 2;
-	int partialLength = (arrayLength - headingColumn1.length() / 2);
 
-	if ((arrayLength % 2) == 0)
-		System.out.println("");
-	System.out.println("|" + headingColumns);
-	cityNames += headingColumns.length() + 3;
-	System.out.println("");
->>>>>>> refs/remotes/origin/master
 
 //-------------------------------------------------------------------- //
 //							Comparaison								//
@@ -213,7 +185,6 @@ public static void printHeading(int generationNumbre) {
 	static void compare() {
 //comparaison et why not créer un tableau excel ou graphe automatiquement
 
-		epilogue("[Fin de compare]");
 	}
 //-------------------------------------------------------------------- //
 //						 Combinaison									//
@@ -222,9 +193,6 @@ public static void printHeading(int generationNumbre) {
 		
 		ArrayList<City> cities = creationroute();
 		Route Route1 = new Route(cities);
-		System.out.println("Solution Initiale :\n");
-		System.out.println(Route1.toString());
-		System.out.println(Route1.getTotalDistance());
 		
 		SolutionRC solution1 = new SolutionRC(100, 0.995);
 		Route s_f = solution1.RC(Route1); 
@@ -233,18 +201,18 @@ public static void printHeading(int generationNumbre) {
 		solution.optimiserTabou();
 
 		
-		
 		try {
 			Runtime rt = Runtime.instance();
 			Properties p = new ExtendedProperties(); 
 			p.setProperty("gui", "true"); 
 			ProfileImpl pc = new ProfileImpl(p);
 			AgentContainer container = rt.createMainContainer(pc);
-			AgentController AgentRC = container.createNewAgent("AgentRC", "AgentRC", new Object[] {s_f});
 			AgentController AgentTabou = container.createNewAgent("AgentTabou", "AgentTabou", new Object[] {solution.getBestPath()});
+			AgentController AgentRC = container.createNewAgent("AgentRC", "AgentRC", new Object[] {s_f});
+
+			AgentTabou.start(); 
 
 			AgentRC.start();
-			AgentTabou.start(); 
 			container.start();
 
 			
@@ -253,10 +221,7 @@ public static void printHeading(int generationNumbre) {
 			e.printStackTrace();
 		} 
 		
-		
-		
-		
-		
+
 	}
 //-------------------------------------------------------------------- //
 //							deuxième test								//
@@ -265,27 +230,4 @@ public static void printHeading(int generationNumbre) {
 
 	}
 
-
-//--------------------------------------------------------------------- //
-	static void prologue() throws UnknownHostException {
-
-//		Création de la chaîne d'identification
-			signature = System.getProperty("user.name");
-			InetAddress addr = InetAddress.getLocalHost();
-			signature += "\t" + addr.getHostAddress() + "\t" + 
-					addr.getHostName() + "\t   ";
-	}
-
-	
-	
-/**
-* Affiche le texte défini comme paramètre puis la signature de 
-* l'utiliseur puis la date et l'heure
-* 
-* @param msg		Message à afficher
-*/
-	static void epilogue(String msg)  {
-		System.out.print(msg + "\n" + signature);
-			
-	}
-	}
+}
