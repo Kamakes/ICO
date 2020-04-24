@@ -193,7 +193,7 @@ public class Main {
 				switch (choix) {
 					case 0 : break;
 					case 1 : testtabou(); break;
-					case 2 : testRC(); break;
+					case 2 : testRS(); break;
 					case 3 : testAG(); break;
 					case 4 : compare(); break;
 					case 5 : combine(); break;
@@ -214,7 +214,7 @@ public class Main {
 		static int menu() {
 			System.out.println();
 			System.out.println("Pour tester l'algorithme tabou ...................... tapez 1");
-			System.out.println("Pour tester l'algorithme RC ......................... tapez 2");
+			System.out.println("Pour tester l'algorithme RS ......................... tapez 2");
 			System.out.println("Pour tester l'algorithme génétique .................. tapez 3");
 			System.out.println("Pour comparer les 3 algorithme....................... tapez 4");
 			System.out.println("Pour tester la combinaison des algorithmes  ......... tapez 5");
@@ -249,15 +249,15 @@ public class Main {
 //-------------------------------------------------------------------- //
 //							Algorithme RC								//
 //-------------------------------------------------------------------- //
-	static void testRC() {
+	static void testRS() {
 	//RC
 		ArrayList<City> cities = creationroute();
 		Route Route1 = new Route(cities);
 		System.out.println(Route1.toString());
 		System.out.println(Route1.getTotalDistance());
 		
-		SolutionRC solution1 = new SolutionRC(100, 0.995);
-		Route s_f = solution1.RC(Route1); 
+		SolutionRS solution1 = new SolutionRS(100, 0.995);
+		Route s_f = solution1.RS(Route1); 
 		System.out.print(s_f);
 		System.out.print(s_f.getTotalDistance());
 	
@@ -303,8 +303,8 @@ public class Main {
 		ArrayList<City> cities = creationroute();
 		Route Route1 = new Route(cities);
 		
-		SolutionRC solution1 = new SolutionRC(100, 0.995);
-		Route s_f = solution1.RC(Route1); 
+		SolutionRS solution1 = new SolutionRS(100, 0.995);
+		Route s_f = solution1.RS(Route1); 
 		
 		SolutionTabou solution = new SolutionTabou(cities,3, 500);
 		solution.optimiserTabou();
@@ -317,11 +317,11 @@ public class Main {
 			ProfileImpl pc = new ProfileImpl(p);
 			AgentContainer container = rt.createMainContainer(pc);
 			AgentController AgentTabou = container.createNewAgent("AgentTabou", "AgentTabou", new Object[] {solution.getBestPath()});
-			AgentController AgentRC = container.createNewAgent("AgentRC", "AgentRC", new Object[] {s_f});
+			AgentController AgentRS = container.createNewAgent("AgentRS", "AgentRS", new Object[] {s_f});
 
 			AgentTabou.start(); 
 
-			AgentRC.start();
+			AgentRS.start();
 			container.start();
 
 			

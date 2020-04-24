@@ -9,7 +9,7 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.UnreadableException;
 import jade.wrapper.ControllerException;
  
-public class AgentRC extends Agent {
+public class AgentRS extends Agent {
 	
 	private Route best_route; 
 	
@@ -18,7 +18,7 @@ public class AgentRC extends Agent {
 		Object[] args = getArguments(); 
 		if(args.length==1) {
 			best_route = (Route) args[0]; 
-			System.out.println("\n Distance initiale Agent RC : "+ best_route.getTotalDistance()); 
+			System.out.println("\n Distance initiale Agent RS : "+ best_route.getTotalDistance()); 
 			// TODO Auto-generated method stub
 			
 			ACLMessage msg = new ACLMessage(ACLMessage.REQUEST); 
@@ -30,7 +30,7 @@ public class AgentRC extends Agent {
 				e.printStackTrace();
 			}
 			send(msg);
-			System.out.println("Agent RC envoie le premier Message");
+			System.out.println("Agent RS envoie le premier Message");
 			
 			
 			
@@ -43,19 +43,22 @@ public class AgentRC extends Agent {
 					//MessageTemplate messageTemplate.and(MessageTemplate.matchPerformative(ACLMessage.INFORM), ); 
 					ACLMessage msg = receive(); 
 					if(msg!=null) {
-						System.out.println("Agent RC a reçu un message envoyé par : " + msg.getSender().getName());	
+						System.out.println("Agent RS a reçu un message envoyé par : " + msg.getSender().getName());	
 						try {
 							Route Route_reçue = (Route) msg.getContentObject(); 
 							if (Route_reçue.getTotalDistance() < best_route.getTotalDistance()) {
-								System.out.println("Le critère reçu est meilleur que celui de l'agent RC"); 
-								System.out.println("\n L'Agent RC recalcule à partir de la route reçue"); 
-								SolutionRC solution1 = new SolutionRC(100, 0.995);
-								Route RouteRC = solution1.RC(Route_reçue); 
+								System.out.println("Le critère envoyé par" + msg.getSender().getName()+ "est meilleur"); 
+								System.out.println("\n L'Agent RS recalcule à partir de la route reçue"); 
+								SolutionRS solution1 = new SolutionRS(100, 0.995);
+								Route RouteRS = solution1.RS(Route_reçue); 
 								
-								System.out.println("Agent RC a trouvé : " + RouteRC.getTotalDistance());
-									if (RouteRC.getTotalDistance()< best_route.getTotalDistance()) {
-										best_route = RouteRC ; 
-										System.out.println("Agent RC a amélioré sa solution et la transmet"); 
+								if (RouteRS.getTotalDistance()< best_route.getTotalDistance()) {
+									best_route = RouteRS ; 
+									System.out.println("Agent RS a amélioré sa solution ");
+									
+									if (best_route.getTotalDistance() < Route_reçue.getTotalDistance()) {
+										System.out.println("Agent RS a un meilleur critère que : " + msg.getSender().getName() + " :" + best_route.getTotalDistance());
+										System.out.println("La meilleure route actuelle est : " + best_route.toString());
 										
 										ACLMessage reply = msg.createReply(); 
 										reply.setPerformative(ACLMessage.AGREE); 
@@ -66,21 +69,22 @@ public class AgentRC extends Agent {
 											e.printStackTrace();
 										} 
 										send(reply); 
-										
-										if (best_route.getTotalDistance() < Route_reçue.getTotalDistance()) {
-											System.out.println("Agent RC a le meilleur critère : " + best_route.getTotalDistance());
-											System.out.println("La meilleure route associée est : " + best_route.toString());
-										}
-										
-										
 									}
 									else {
-										System.out.println("Pas d'amélioration pour l'agent RC"); 
+										System.out.println("Mais elle n'est pas meilleure que celle de l'agent : "+ msg.getSender().getName());
+										System.out.println("Solution actuelle Agent RS" + best_route.getTotalDistance()); 
 									}
+									
+										
+								}
+								else {
+									System.out.println("Pas d'amélioration pour l'agent RS");
+									System.out.println("Solution actuelle Agent RS" + best_route.getTotalDistance()); 
+								}
 							}
 							else {
-								System.out.println("Le critère actuel de l'Agent RC est meilleure que celui reçu");
-								System.out.println("Agent RC transmet sa meilleure route");
+								System.out.println("Le critère actuel de l'Agent RS est meilleure que celui reçu");
+								System.out.println("Agent RS transmet sa solution à "+ msg.getSender().getName());
 								
 								ACLMessage reply = msg.createReply(); 
 								reply.setPerformative(ACLMessage.AGREE); 
@@ -116,7 +120,7 @@ public class AgentRC extends Agent {
 	
 	@Override
 	protected void takeDown() {
-		System.out.println("Destruction de l'agent RC");
+		System.out.println("Destruction de l'agent RS");
 	}
 			
 }

@@ -33,14 +33,20 @@ public class AgentTabou extends Agent {
 						try {
 							Route Route_reçue = (Route) msg.getContentObject(); 
 							if (Route_reçue.getTotalDistance() < best_route.getTotalDistance()) {
-								System.out.println("Le critère reçu est meilleur que celui de l'agent Tabou"); 
+								System.out.println("Le critère envoyé par" + msg.getSender().getName()+ "est meilleur"); 
 								System.out.println("\n L'Agent Tabou recalcule à partir de la route reçue"); 
 								SolutionTabou solution = new SolutionTabou(Route_reçue.getCities(), 3, 500);
 								solution.optimiserTabou();
-								System.out.println("Agent Tabou a trouvé : " + solution.getBestPath().getTotalDistance());
-									if (solution.getBestPath().getTotalDistance()< best_route.getTotalDistance()) {
-										best_route = solution.getBestPath() ; 
-										System.out.println("Agent Tabou a amélioré sa solution et la transmet"); 
+								
+								if (solution.getBestPath().getTotalDistance()< best_route.getTotalDistance()) {
+									best_route = solution.getBestPath() ; 
+									System.out.println("Agent Tabou a amélioré sa solution"); 
+									
+									
+									
+									if (best_route.getTotalDistance() < Route_reçue.getTotalDistance()) {
+										System.out.println("Agent Tabou a un meilleur critère que : " + msg.getSender().getName() + " : " + best_route.getTotalDistance());
+										System.out.println("La meilleure route associée est : " + best_route.toString());
 										
 										ACLMessage reply = msg.createReply(); 
 										reply.setPerformative(ACLMessage.AGREE); 
@@ -51,21 +57,23 @@ public class AgentTabou extends Agent {
 											e.printStackTrace();
 										} 
 										send(reply); 
-										
-										if (best_route.getTotalDistance() < Route_reçue.getTotalDistance()) {
-											System.out.println("Agent Tabou a le meilleur critère : " + best_route.getTotalDistance());
-											System.out.println("La meilleure route associée est : " + best_route.toString());
-										}
-										
-										
 									}
+									
 									else {
-										System.out.println("Pas d'amélioration pour l'agent Tabou"); 
+										System.out.println("Mais elle n'est pas meilleure que celle de l'agent : "+ msg.getSender().getName());
+										System.out.println("Solution actuelle Agent Tabou" + best_route.getTotalDistance()); 
 									}
+									
+										
+								}
+								else {
+									System.out.println("Pas d'amélioration pour l'agent Tabou");
+									System.out.println("Solution actuelle Agent Tabou" + best_route.getTotalDistance()); 
+								}
 							}
 							else {
 								System.out.println("Le critère actuel de l'Agent Tabou est meilleure que celui reçu");
-								System.out.println("Agent RC transmet sa meilleure route");
+								System.out.println("Agent Tabou transmet sa solution à "+ msg.getSender().getName());
 								
 								ACLMessage reply = msg.createReply(); 
 								reply.setPerformative(ACLMessage.AGREE); 

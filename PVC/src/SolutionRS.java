@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.Random;
 
-public class SolutionRC {
+public class SolutionRS {
 	
 	private double T_init;
 	private double coolingRate;
@@ -9,12 +9,12 @@ public class SolutionRC {
 	private Route previousRoute ;
 	private int iterations;
 	
-	public SolutionRC(double T_init, double coolingRate) {
+	public SolutionRS(double T_init, double coolingRate) {
 		this.T_init = T_init; 
 		this.coolingRate = coolingRate; 
 	}
 
-	public Route RC(Route route) {
+	public Route RS(Route route) {
 		
 		iterations = 0; 
 		double t = T_init ;
