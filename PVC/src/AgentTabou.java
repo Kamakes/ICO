@@ -9,7 +9,7 @@ import jade.lang.acl.UnreadableException;
 public class AgentTabou extends Agent {
 	
 	
-	private Route best_route; 
+	public Route best_route; 
 	
 	@Override
 	protected void setup() {
@@ -35,7 +35,7 @@ public class AgentTabou extends Agent {
 							if (Route_reçue.getTotalDistance() < best_route.getTotalDistance()) {
 								System.out.println("Le critère reçu est meilleur que celui de l'agent Tabou"); 
 								System.out.println("\n L'Agent Tabou recalcule à partir de la route reçue"); 
-								SolutionTabou solution = new SolutionTabou(Route_reçue.getCities(),10);
+								SolutionTabou solution = new SolutionTabou(Route_reçue.getCities(), 3, 500);
 								solution.optimiserTabou();
 								System.out.println("Agent Tabou a trouvé : " + solution.getBestPath().getTotalDistance());
 									if (solution.getBestPath().getTotalDistance()< best_route.getTotalDistance()) {

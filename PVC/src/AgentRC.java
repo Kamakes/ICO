@@ -11,7 +11,7 @@ import jade.wrapper.ControllerException;
  
 public class AgentRC extends Agent {
 	
-	public Route best_route; 
+	private Route best_route; 
 	
 	@Override
 	protected void setup() {

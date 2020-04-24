@@ -113,7 +113,7 @@ public class Main {
 		cities.add(Montpellier);
 		cities.add(Bordeaux);
 		cities.add(Lille);
-		/*cities.add(Rennes);
+		cities.add(Rennes);
 		cities.add(Reims);
 		cities.add(Le_Havre);
 		cities.add(Saint_Etienne);
@@ -177,7 +177,7 @@ public class Main {
 		cities.add(Ajaccio);
 		cities.add(Valence);
 		cities.add(Quimper);
-		cities.add(Villeneuve_dAscq);*/
+		cities.add(Villeneuve_dAscq);
 		return cities;
 	}
 	
@@ -238,7 +238,7 @@ public class Main {
 	static void testtabou(){	
 	//tabou
 		ArrayList<City> cities = creationroute();
-		SolutionTabou solution = new SolutionTabou(cities,10);
+		SolutionTabou solution = new SolutionTabou(cities,3, 500);
 		System.out.println(solution.getBestPath().toString());
 		System.out.println(solution.getBestPath().getTotalDistance());
 		solution.optimiserTabou();
@@ -306,7 +306,7 @@ public class Main {
 		SolutionRC solution1 = new SolutionRC(100, 0.995);
 		Route s_f = solution1.RC(Route1); 
 		
-		SolutionTabou solution = new SolutionTabou(cities,10);
+		SolutionTabou solution = new SolutionTabou(cities,3, 500);
 		solution.optimiserTabou();
 
 		
