@@ -121,7 +121,6 @@ public class Main {
 		cities.add(Grenoble);
 		cities.add(Dijon);
 		cities.add(Angers);
-		cities.add(Saint_Denis);
 		cities.add(Le_Mans);
 		cities.add(Aix_en_Provence);
 		cities.add(Brest);
