@@ -20,7 +20,7 @@ public class SolutionRS {
 		double t = T_init ;
 		
 		double best_distance = route.getTotalDistance(); // Distance initiale
-		Route s = route ; 
+		Route s = new Route(route) ; 
 		
 		while (t>0.001) {
 			iterations +=1 ;

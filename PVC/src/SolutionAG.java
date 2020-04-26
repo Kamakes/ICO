@@ -7,7 +7,7 @@ public class SolutionAG {
 	public static final int TOURNAMENT_SELECTION_SIZE = 3;
 	public static final int POPULATION_Size = 8;
 	public static final int NUM_ELITE_ROUTES = 1;
-	public static final int NUM_GENERATIONS = 3000;
+	public static final int NUM_GENERATIONS = 5000;
 	// attributs
 	private ArrayList<City> initialRoute = null;
 

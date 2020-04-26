@@ -268,7 +268,7 @@ public class Main {
 	static void testAG() {
 		ArrayList<City> cities = creationroute();
 		Route Route1 = new Route(cities);
-		Population population = new Population(SolutionAG.POPULATION_Size, cities);
+		Population population = new Population(SolutionAG.POPULATION_Size, Route1);
 
 		population.sortRouteByFitness();
 		SolutionAG ag = new SolutionAG(cities);
@@ -308,6 +308,18 @@ public class Main {
 		
 		SolutionTabou solution = new SolutionTabou(cities,3, 500);
 		solution.optimiserTabou();
+		
+		Population population = new Population(SolutionAG.POPULATION_Size, Route1);
+
+		population.sortRouteByFitness();
+		SolutionAG ag = new SolutionAG(cities);
+		int generationNumbre = 1;
+		while (generationNumbre < SolutionAG.NUM_GENERATIONS) {
+			population = ag.evolve(population);
+			population.sortRouteByFitness();
+			generationNumbre++;
+
+		}
 
 		
 		try {
@@ -318,11 +330,14 @@ public class Main {
 			AgentContainer container = rt.createMainContainer(pc);
 			AgentController AgentTabou = container.createNewAgent("AgentTabou", "AgentTabou", new Object[] {solution.getBestPath()});
 			AgentController AgentRS = container.createNewAgent("AgentRS", "AgentRS", new Object[] {s_f});
+			AgentController AgentAG = container.createNewAgent("AgentAG", "AgentAG", new Object[] {population.getRoutes().get(0)});
+
 
 			AgentTabou.start(); 
-
+			AgentAG.start();
 			AgentRS.start();
 			container.start();
+			
 
 			
 		} catch (ControllerException e) {

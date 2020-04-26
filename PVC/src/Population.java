@@ -10,12 +10,12 @@ public class Population {
 
 	}
 
-	// constructeur,initialis la popoulation
-	public Population(int populationSize, ArrayList<City> cities) {
-		IntStream.range(0, populationSize).forEach(x -> routes.add(new Route(cities)));
+	// constructeur,initialis la population
+	public Population(int populationSize, Route route ) {
+		IntStream.range(0, populationSize).forEach(x -> routes.add(new Route(route)));
 	}
 
-	// Gettre
+	// Getters
 	public ArrayList<Route> getRoutes() {
 		return routes;
 	}
