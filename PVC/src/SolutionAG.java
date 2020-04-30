@@ -4,7 +4,7 @@ import java.util.stream.IntStream;
 public class SolutionAG {
 	// Constantes
 	public static final double MUTATION_PROBABILITY = 0.25;
-	public static final int TOURNAMENT_SELECTION_SIZE = 3;
+	public static final int TOURNAMENT_SELECTION_SIZE = 2;
 	public static final int POPULATION_Size = 8;
 	public static final int NUM_ELITE_ROUTES = 1;
 	public static final int NUM_GENERATIONS = 5000;
