@@ -5,9 +5,9 @@ public class SolutionAG {
 	// Constantes
 	public static final double MUTATION_PROBABILITY = 0.25;
 	public static final int TOURNAMENT_SELECTION_SIZE = 2;
-	public static final int POPULATION_Size = 8;
+	public static final int POPULATION_Size = 10;
 	public static final int NUM_ELITE_ROUTES = 1;
-	public static final int NUM_GENERATIONS = 5000;
+	public static final int NUM_GENERATIONS = 1000;
 	// attributs
 	private ArrayList<City> initialRoute = null;
 
