@@ -5,18 +5,20 @@ public class SolutionTabou {
 
 	private final int tailleTabou;
 	private Route [] tabou;
-	private Route bestPath;
-	private Route currentPath;
-	private final int nbIterations;
-	
-	
+	private Route bestPath; //meilleur chemin rencontré
+	private Route currentPath; //chemin courant
+	private final int nbIterations; //critère d'arrêt dans la recherche
+	private double time_taken ; //sert pour la mesure de la durée de la recherche
+
+
+		
 	//Constructeur
 	
 	public SolutionTabou (ArrayList<City> cities, int tailleTabou, int nbIterations) {
 		this.tailleTabou = tailleTabou;
-		this.tabou = new Route [this.tailleTabou]; //le tabou est initialement uniquement constitué d'éléments "null"
-		this.currentPath = new Route (cities); //currentPath est une route créée à partir du mélange aléatoire des villes de la liste cities
-		this.bestPath = new Route (currentPath); //bestPath est une copie de la route currentPath (même ordre des villes)
+		this.tabou = new Route [this.tailleTabou]; //le tabou est initialement constitué d'éléments "null"
+		this.currentPath = new Route (cities); //On initialise le chemin courant aléatoirement
+		this.bestPath = new Route (currentPath); //même ordre des villes que currentPath
 		this.nbIterations = nbIterations;
 	}
 	
@@ -27,17 +29,20 @@ public class SolutionTabou {
 	public Route getBestPath() {
 		return this.bestPath;
 	}
+	public double time_taken() {return this.time_taken;}
+
 
 	
 	
 	//Procédure publique
 	
 	public void optimiserTabou () { 
-		for (int i=0 ; i<this.nbIterations ; i++) { //on effectue la recherche sur un nombre d'itérations défini
-			//nbIterations sert de condition d'arrêt pour l'algorithme de recherche
+		long startTime = System.nanoTime(); //début de mesure de durée
+		for (int i=0 ; i<this.nbIterations ; i++) { 
 			this.actualiserTabou(); //ajout du currentPath au début du tabou, l'élément le plus ancien disparait
 			this.actualiserChemin(); //on actualise le currentPath, et potentiellement le bestPath
 		}
+		time_taken = System.nanoTime() - startTime;
 	}
 	
 	
@@ -45,31 +50,31 @@ public class SolutionTabou {
 	//Méthodes privées
 	
 	private void actualiserTabou () {
-		for (int i=this.tailleTabou-1 ; i>0 ; i--) { //chaque élément est décalé 
-				this.tabou[i]=this.tabou[i-1];       //vers le bout de la liste
+		for (int i=this.tailleTabou-1 ; i>0 ; i--) { 
+				this.tabou[i]=this.tabou[i-1]; 
 		}
 		this.tabou[0]=this.currentPath; //la solution courante est ajoutée au tabou
 	}
 	
 	
 	private Route ajouterVoisin (int i, int k) {
-		Route voisin = new Route(this.currentPath); //copie de currentPath destinée à devenir un voisin
+		Route voisin = new Route(this.currentPath); //futur voisin
 		int n = this.currentPath.getCities().size();
-		if (i+k < n) { //si il existe une ville i+k dans la route
-			City memoire = voisin.getCities().get(i+k);            //on échange
+		if (i+k < n) {                //si il existe une ville i+k dans la route
+			City memoire = voisin.getCities().get(i+k);             //on échange
 			voisin.getCities().set(i+k, voisin.getCities().get(i)); //les villes
-			voisin.getCities().set(i, memoire);                    //i et i+k
+			voisin.getCities().set(i, memoire);                     //i et i+k
 		}
-		else { //si i+k est plus grand que la longueur de la liste (la ville i+k n'existe pas)
-			City memoire = voisin.getCities().get(i+k-n);            //on échange
+		else {                                                        //sinon
+			City memoire = voisin.getCities().get(i+k-n);             //on échange
 			voisin.getCities().set(i+k-n, voisin.getCities().get(i)); //les villes
-			voisin.getCities().set(i, memoire);                      //i et i+k-n
+			voisin.getCities().set(i, memoire);                       //i et i+k-n
 		}
 		return voisin;
 	}
 		
 	
-	//on vérifie si la route test appartient à la liste tabou de l'objet
+	//vérifie si la route test appartient à la liste tabou de l'objet
 	private boolean existe (Route test) {
 		for (int i=0 ; i<this.tailleTabou ; i++) {
 			if (this.tabou[i]!=null && test.toString().equals(this.tabou[i].toString())) {
@@ -81,14 +86,14 @@ public class SolutionTabou {
 	
 	
 	private ArrayList<Route> creerVoisins () {
-		ArrayList<Route> voisins = new ArrayList<Route>(); //ArrayList de route destiné à acceuillir les voisins du currentPath
+		ArrayList<Route> voisins = new ArrayList<Route>(); //futur voisinage du currentPath
 		int n = this.currentPath.getCities().size();
-		Random rand = new Random();    //on crée un entier k aléatoire compris entre 1 et n-1 afin de permuter une ville 
-		int k = rand.nextInt(n-1) + 1; //avec celle située k rangs plus loins dans la route lors de la créaton de voisins
-		for (int i=0 ; i<n ; i++) {  //on crée autant de voisins potentiels que le nombre de villes que contient la route
+		Random rand = new Random();    //entier k aléatoire compris entre 1 et n-1 afin de permuter une ville avec
+		int k = rand.nextInt(n-1) + 1; //celle située k rangs plus loins dans la route lors de la créaton de voisins
+		for (int i=0 ; i<n ; i++) {
 			Route newVoisin = ajouterVoisin(i, k);
-			if (!this.existe(newVoisin)) { //un voisin potentiel est effectivement ajouté 
-				voisins.add(newVoisin);    //à la liste des voisins si il n'est pas tabou
+			if (!this.existe(newVoisin)) { //un voisin potentiel est effectivement ajouté à
+				voisins.add(newVoisin);    // la liste des voisins si il n'est pas tabou
 			}
 		}
 		return voisins;
@@ -96,14 +101,14 @@ public class SolutionTabou {
 	
 		
 	private void actualiserChemin () {
-		ArrayList<Route> voisins = this.creerVoisins(); //on crée les voisins du currentPath
+		ArrayList<Route> voisins = this.creerVoisins(); //voisins du currentPath
 		double newCurrentDistance = voisins.get(0).getTotalDistance();
-		for (Route test : voisins) { //on itère sur tous le voisins
+		for (Route test : voisins) {
 			double distanceTest = test.getTotalDistance();
-			if (distanceTest < this.bestPath.getTotalDistance()) { //si un voisin est le meilleur chemin testé depuis
-				this.bestPath = test;                              //le début de la recherche, on update le bestPath
+			if (distanceTest < this.bestPath.getTotalDistance()) { 								
+				this.bestPath = test;                              
 			}
-			if (distanceTest <= newCurrentDistance) { //Si un voisin est meilleurs que les autres voisins 
+			if (distanceTest <= newCurrentDistance) { //Si un voisin est meilleur que les autres voisins 
 				newCurrentDistance = distanceTest;    //déjà testés au cours de cette itération, on update 
 				this.currentPath = test;              //le currentPath en vue de l'itération suivante
 			}

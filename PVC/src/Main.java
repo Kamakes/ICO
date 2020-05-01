@@ -15,15 +15,11 @@ import jade.wrapper.ControllerException;
 
 public class Main {
 	final static Scanner stdinput = new Scanner(System.in);
-
-
-	static File 	dirDot;		//	Dossier des fichiers Dot
-	static File 	dirPng;		//	Dossier des fichiers Png
-	static String	signature;	// 	Chaîne d'identification	
-
-
+	
 	public static ArrayList<City> creationroute() {
-
+		
+		// Création d'une liste contenant les villes suivantes : 
+		
 		City  Paris = new City ("Paris",48.86,2.34445);
 		City  Marseille = new City ("Marseille",43.2967,5.37639);
 		City  Lyon = new City ("Lyon",45.7589,4.84139);
@@ -181,44 +177,39 @@ public class Main {
 		return cities;
 	}
 	
-		// --------------------------------------------------------------------- //
-		//				V A R I A B L E S   D E   C L A S S E					 //
-		// --------------------------------------------------------------------- //
+	// -------------------------------------------------------------------- //
+	//								M E N U									//
+	// -------------------------------------------------------------------- //
+
 	public static void main(String[] args) {
+			// Programme principal : 
 		
+			ArrayList<City> cities = creationroute();
+			System.out.print("La route contient "+ cities.size() + "villes\n"); 
 			
+			// L'utilisateur choisi quel algorithme exécuter pour résoudre le problème parmis 4 possibles (Tabou, RS, AG, SMA) : 
 			int choix;
-			//do {
 				choix = menu();
 				switch (choix) {
 					case 0 : break;
 					case 1 : testtabou(); break;
 					case 2 : testRS(); break;
 					case 3 : testAG(); break;
-					case 4 : compare(); break;
-					case 5 : combine(); break;
-					case 6 : secondtest(); break;
+					case 4 : combine(); break;
 		
 					default:
 						System.out.println("Choix incorrect. Recommencez !\n\r"); 
 						break;
-			//	} 
 			} 
 				
 	}
-		// -------------------------------------------------------------------- //
-
-		// -------------------------------------------------------------------- //
-		//								M E N U									//
-		// -------------------------------------------------------------------- //
+		
 		static int menu() {
-			System.out.println();
+			
 			System.out.println("Pour tester l'algorithme tabou ...................... tapez 1");
 			System.out.println("Pour tester l'algorithme RS ......................... tapez 2");
 			System.out.println("Pour tester l'algorithme génétique .................. tapez 3");
-			System.out.println("Pour comparer les 3 algorithme....................... tapez 4");
-			System.out.println("Pour tester la combinaison des algorithmes  ......... tapez 5");
-			System.out.println("Pour comparer les 3 parcours pour un autre trajet ... tapez 6");
+			System.out.println("Pour tester le SMA  ................................. tapez 4");
 			System.out.println("Pour terminer ....................................... tapez 0");
 
 			System.out.print("\nVotre choix : ");
@@ -232,44 +223,55 @@ public class Main {
 
 		}	
 
-// -------------------------------------------------------------------- //
-//							Algorithme Tabou							//
-//-------------------------------------------------------------------- //
+	// -------------------------------------------------------------------- //
+	//							Algorithme Tabou							//
+	//-------------------------------------------------------------------- //
 	static void testtabou(){	
-	//tabou
+		// On crée une route initiale contenant toutes les villes définies dans creationroute() : 
 		ArrayList<City> cities = creationroute();
 		SolutionTabou solution = new SolutionTabou(cities,3, 500);
-		System.out.println(solution.getBestPath().toString());
-		System.out.println(solution.getBestPath().getTotalDistance());
+		System.out.println("La route initiale est : " + solution.getBestPath().toString());
+		System.out.println("Ce qui correspond à la distance  : " + solution.getBestPath().getTotalDistance());
+		// On lance l'algorithme Tabou : 
 		solution.optimiserTabou();
-		System.out.println(solution.getBestPath().toString());
-		System.out.println(solution.getBestPath().getTotalDistance());
+		System.out.println("La route déterminée par l'algorithme Tabou est " + solution.getBestPath().toString());
+		System.out.println("Ce qui correspond à la distance : "+ solution.getBestPath().getTotalDistance());
 	}
 
-//-------------------------------------------------------------------- //
-//							Algorithme RC								//
-//-------------------------------------------------------------------- //
+	//-------------------------------------------------------------------- //
+	//							Algorithme RS								//
+	//-------------------------------------------------------------------- //
 	static void testRS() {
-	//RC
+		// On crée une route initiale contenant toutes les villes définies dans creationroute() : 
 		ArrayList<City> cities = creationroute();
 		Route Route1 = new Route(cities);
-		System.out.println(Route1.toString());
-		System.out.println(Route1.getTotalDistance());
+		System.out.println("La route initiale est : " + Route1.toString());
+		System.out.println("Ce qui correspond à la distance : " + Route1.getTotalDistance());
 		
+		// On lance l'algorithme RS avec les paramètres 100 et 0.995 : 
 		SolutionRS solution1 = new SolutionRS(100, 0.995);
+		// On stock la solution trouvée par l'algorithme RS dans la variable s_f :
 		Route s_f = solution1.RS(Route1); 
-		System.out.print(s_f);
-		System.out.print(s_f.getTotalDistance());
+		
+		System.out.print("La route déterminée par l'algorithme RS est : " + s_f);
+		System.out.print("\nCe qui correspond à la distance : " + s_f.getTotalDistance());
 	
 	}
-//-------------------------------------------------------------------- //
-//							Algorithme AG								//
-//-------------------------------------------------------------------- //
+	
+	//-------------------------------------------------------------------- //
+	//							Algorithme AG								//
+	//-------------------------------------------------------------------- //
 	static void testAG() {
+		// On crée une route initiale contenant toutes les villes définies dans creationroute() : 
 		ArrayList<City> cities = creationroute();
 		Route Route1 = new Route(cities);
+		System.out.println("La route initiale est : " + Route1.toString());
+		System.out.println("Ce qui correspond à la distance : " + Route1.getTotalDistance());
+		
+		// On crée une nouvelle population à partir de la route initiale : 
 		Population population = new Population(SolutionAG.POPULATION_Size, Route1);
-
+		
+		// A commenter... 
 		population.sortRouteByFitness();
 		SolutionAG ag = new SolutionAG(cities);
 		int generationNumbre = 1;
@@ -280,29 +282,20 @@ public class Main {
 
 		}
 		
-		System.out.println(population.getRoutes().get(0));
-		System.out.println(" Distance Totale est :"
+		System.out.println("La route déterminée par l'algorithme RS est : " + population.getRoutes().get(0));
+		System.out.println("Ce qui correspond à la distance : "
 				+ String.format("%.2f", population.getRoutes().get(0).getTotalDistance()) + "Kms");
 
 	}
 
-
-
-//-------------------------------------------------------------------- //
-//							Comparaison								//
-//-------------------------------------------------------------------- //
-	static void compare() {
-//comparaison et why not créer un tableau excel ou graphe automatiquement
-
-	}
-//-------------------------------------------------------------------- //
-//						 Combinaison									//
-//-------------------------------------------------------------------- //
+	//-------------------------------------------------------------------- //
+	//						 		SMA 									//
+	//-------------------------------------------------------------------- //
 	static void combine() {
 		
 		ArrayList<City> cities = creationroute();
 		Route Route1 = new Route(cities);
-		
+		// On détermine trois solutions initiales pour les agents RS, Tabou et AG : 
 		SolutionRS solution1 = new SolutionRS(100, 0.995);
 		Route s_f = solution1.RS(Route1); 
 		
@@ -320,38 +313,30 @@ public class Main {
 			generationNumbre++;
 
 		}
-
 		
 		try {
+			// On lance le main container : 
 			Runtime rt = Runtime.instance();
 			Properties p = new ExtendedProperties(); 
 			p.setProperty("gui", "true"); 
 			ProfileImpl pc = new ProfileImpl(p);
 			AgentContainer container = rt.createMainContainer(pc);
+			
+			// On crée trois agents dans le main container ayant pour arguments les routes déterminées précédemment : 
 			AgentController AgentTabou = container.createNewAgent("AgentTabou", "AgentTabou", new Object[] {solution.getBestPath()});
 			AgentController AgentRS = container.createNewAgent("AgentRS", "AgentRS", new Object[] {s_f});
 			AgentController AgentAG = container.createNewAgent("AgentAG", "AgentAG", new Object[] {population.getRoutes().get(0)});
-
-
+			
+			// On lance les agents ainsi que le container principal : 
 			AgentTabou.start(); 
 			AgentAG.start();
 			AgentRS.start();
-			container.start();
-			
-
+			container.start();	
 			
 		} catch (ControllerException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			
 		} 
-		
-
 	}
-//-------------------------------------------------------------------- //
-//							deuxième test								//
-//-------------------------------------------------------------------- //
-	static void secondtest() {
-
-	}
-
 }
