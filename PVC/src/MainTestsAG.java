@@ -1,3 +1,4 @@
+
 import java.io.File;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -7,7 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
-public class MainTestRS {
+
+public class MainTestsAG {
 	
 	public static ArrayList<City> creationroute() {
 
@@ -171,7 +173,7 @@ public class MainTestRS {
 	
 	// Méthodes publiques : 
 	
-	public static Map<String,List<Double>> test(ArrayList<City> cities , double Temp , double cooling_rate) {
+	public static Map<String,List<Double>> test(ArrayList<City> cities , int NUM_GENERATIONS , int POPULATION_Size) {
 		// Prend en entrée : les villes, et les paramètres de l'algorithme RS à tester. 
 		// Retourne : - une liste des temps d'exécutions de l'algorithme à tester pour différentes tailles de problèmes.
 		// 			  - une liste de différents critères obtenus par l'algorithme à tester pour différentes tailles de problèmes.
@@ -188,10 +190,22 @@ public class MainTestRS {
 			for (int j =0 ; j<10 ; j++) {
 				ArrayList<City> cities_subset =  getSubset(cities,i);
 				Route R = new Route(cities_subset);
-				SolutionRS solution = new SolutionRS(Temp, cooling_rate);
-				Route s1 =  solution.RS(R); 
-				critere_moyen += s1.getTotalDistance();
-				temps_moyen += solution.time_taken();
+				SolutionAG.POPULATION_Size=POPULATION_Size;
+				SolutionAG.NUM_GENERATIONS=NUM_GENERATIONS;
+				Population population = new Population(SolutionAG.POPULATION_Size, R);
+				population.sortRouteByFitness();
+				SolutionAG ag = new SolutionAG(cities_subset);
+				double a =0; //initialisation du temps
+				int generationNumber = 1;
+
+					while (generationNumber < SolutionAG.NUM_GENERATIONS) {
+						generationNumber++;
+						population = ag.evolve(population);
+						population.sortRouteByFitness();
+						a += SolutionAG.getTime_taken();
+					}
+				critere_moyen += population.getRoutes().get(0).getTotalDistance();
+				temps_moyen += a;
 			}
 			critere_moyen = critere_moyen/10; // critère moyen obtenu
 			temps_moyen = temps_moyen/10 * Math.pow(10, -6); // temps moyen obtenu 
@@ -220,20 +234,16 @@ public class MainTestRS {
 		
 		
 		ArrayList<City> cities = creationroute();
-		System.out.println("Vous êtes dans le test des paramètres de l'algorithme RS") ; 
+		System.out.println("Vous êtes dans le test des paramètres de l'algorithme AG") ; 
 		
 		// Différents tests sont effectués : 
 		
-		for (double i = 100 ; i < 1100 ; i+=100) {
-			System.out.print("\n T_init =" + i +" and CoolingRate = :" + test(cities, i , 0.995));
+		for (int i = 1000 ; i < 3000 ; i+=100) {
+			System.out.print("\n Nombre de générations =" + i +" et taille de population = 8 :" + test(cities, i , 8));
 		}
 	
-		for (double i = 40 ; i < 170 ; i+=20) {
-			System.out.print("\n T_init =" + i +" and CoolingRate = :" + test(cities, i , 0.995));
-		}
-		
-		for (double j = 0.990 ; j < 1 ; j+=0.001) {
-			System.out.print("\n T_init = 60" +" and CoolingRate = :"+ j + test(cities, 60 , j));
+		for (int i = 3 ; i < 11 ; i++) {
+			System.out.print("\n Nombre de générations = 1000 et taille de population  = " +i+ " : " + test(cities, 1000 , i));
 		}
 		
 		

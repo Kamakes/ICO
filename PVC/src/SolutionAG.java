@@ -5,11 +5,12 @@ public class SolutionAG {
 	// Constantes
 	public static final double MUTATION_PROBABILITY = 0.25;
 	public static final int TOURNAMENT_SELECTION_SIZE = 2;
-	public static final int POPULATION_Size = 10;
+	public static int POPULATION_Size;
 	public static final int NUM_ELITE_ROUTES = 1;
-	public static final int NUM_GENERATIONS = 1000;
+	public static int NUM_GENERATIONS ;
 	// attributs
 	private ArrayList<City> initialRoute = null;
+	private static double time_taken ; // Ajout d'une variable pour déterminer le temps d'exécution de l'algorithm AG.  
 
 	// Constructeurs
 	public SolutionAG(ArrayList<City> initialRoute) {
@@ -23,7 +24,10 @@ public class SolutionAG {
 
 	// methodes
 	public Population evolve(Population population) {
-		return mutationPopulation(croisementPopulation(population));
+		long startTime = System.nanoTime(); 
+		Population p = mutationPopulation(croisementPopulation(population));
+		this.time_taken = System.nanoTime() - startTime ; // Temps d'exécution de l'algorithme. 
+		return p;
 	}
 
 	// croisement d'une population
@@ -89,4 +93,13 @@ public class SolutionAG {
 		tournamentPopulation.sortRouteByFitness();
 		return tournamentPopulation;
 	}
+
+	public static double getTime_taken() {
+		return time_taken;
+	}
+
+	public static void setTime_taken(double time_taken) {
+		SolutionAG.time_taken = time_taken;
+	}
+
 }
