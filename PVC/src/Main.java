@@ -275,15 +275,15 @@ public class Main {
 		System.out.println("Ce qui correspond à la distance : " + Route1.getTotalDistance());
 		
 		// On crée une nouvelle population à partir de la route initiale : 
-		Population population = new Population(SolutionAG.POPULATION_Size, Route1);
+		Population population = new Population(SolutionAG.POPULATION_Size, Route1);// la taille de la population = 6
 		
-		// A commenter... 
+		// On trie la population selon la fitness
 		population.sortRouteByFitness();
 		SolutionAG ag = new SolutionAG(cities);
 		int generationNumbre = 1;
-		while (generationNumbre < SolutionAG.NUM_GENERATIONS) {
-			population = ag.evolve(population);
-			population.sortRouteByFitness();
+		while (generationNumbre < SolutionAG.NUM_GENERATIONS) { // le nombre de générations est à priori 1000
+			population = ag.evolve(population); //l'évolution de la population
+			population.sortRouteByFitness(); //un tri pour travailler qu'avec les meilleurs individus
 			generationNumbre++;
 
 		}
@@ -293,6 +293,7 @@ public class Main {
 				+ String.format("%.2f", population.getRoutes().get(0).getTotalDistance()) + "Kms");
 
 	}
+
 
 	//-------------------------------------------------------------------- //
 	//						 		SMA 									//
