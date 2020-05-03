@@ -4,6 +4,12 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import Algorithmes.City;
+import Algorithmes.Population;
+import Algorithmes.Route;
+import Algorithmes.SolutionAG;
+import Algorithmes.SolutionRS;
+import Algorithmes.SolutionTabou;
 import jade.core.ProfileImpl;
 import jade.core.Runtime;
 import jade.util.ExtendedProperties;

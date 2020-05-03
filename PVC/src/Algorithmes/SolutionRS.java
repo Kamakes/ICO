@@ -1,3 +1,4 @@
+package Algorithmes;
 import java.util.ArrayList;
 import java.util.Random;
 

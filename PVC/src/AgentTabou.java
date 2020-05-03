@@ -1,5 +1,7 @@
 import java.io.IOException;
 
+import Algorithmes.Route;
+import Algorithmes.SolutionTabou;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;

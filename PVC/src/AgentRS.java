@@ -1,6 +1,10 @@
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Arrays;
+
+import Algorithmes.Route;
+import Algorithmes.SolutionRS;
+
 import java.util.ArrayList;
 import jade.core.AID;
 import jade.core.Agent;

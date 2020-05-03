@@ -1,3 +1,4 @@
+package Algorithmes;
 import java.util.ArrayList;
 import java.util.stream.IntStream;
 
@@ -5,9 +6,9 @@ public class SolutionAG {
 	// Constantes
 	public static final double MUTATION_PROBABILITY = 0.25;
 	public static final int TOURNAMENT_SELECTION_SIZE = 2;
-	public static int POPULATION_Size;
-	public static final int NUM_ELITE_ROUTES = 1;
-	public static int NUM_GENERATIONS ;
+	public static int POPULATION_Size=8;
+	public static final int NUM_ELITE_ROUTES = 3;
+	public static int NUM_GENERATIONS=2400 ;
 	// attributs
 	private ArrayList<City> initialRoute = null;
 	private static double time_taken ; // Ajout d'une variable pour déterminer le temps d'exécution de l'algorithm AG.  

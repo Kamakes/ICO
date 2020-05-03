@@ -1,3 +1,5 @@
+package Tests;
+
 import java.io.File;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -8,11 +10,13 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
 
-
-public class MainTestsTabou {
-
+import Algorithmes.City;
+import Algorithmes.Route;
+import Algorithmes.SolutionRS;
+public class MainTestRS {
+	
 	public static ArrayList<City> creationroute() {
-		
+
 		// Création d'une liste contenant les villes suivantes :
 		City  Paris = new City ("Paris",48.86,2.34445);
 		City  Marseille = new City ("Marseille",43.2967,5.37639);
@@ -89,7 +93,8 @@ public class MainTestsTabou {
 		City  Valence = new City ("Valence",44.9333,4.9);
 		City  Quimper = new City ("Quimper",48,-4.1);
 		City  Villeneuve_dAscq = new City ("Villeneuve-d'Ascq",50.6833,3.14167);
-				
+
+		
 		//creation chemin
 		ArrayList<City> cities = new ArrayList<City>();
 		cities.add(Paris);
@@ -167,37 +172,35 @@ public class MainTestsTabou {
 		cities.add(Valence);
 		cities.add(Quimper);
 		cities.add(Villeneuve_dAscq);
-		
 		return cities;
 	}
-
+	
 	// Méthodes publiques : 
 	
-	public static Map<String,List<Double>> test(ArrayList<City> cities , int tailletabou , int nbIterations) {
-		// Prend en entrée : les villes, et les paramètres de l'algorithme Tabou à tester. 
-				// Retourne : - une liste des temps d'exécutions de l'algorithme à tester pour différentes tailles de problèmes.
-				// 			  - une liste de différents critères obtenus par l'algorithme à tester pour différentes tailles de problèmes.
+	public static Map<String,List<Double>> test(ArrayList<City> cities , double Temp , double cooling_rate) {
+		// Prend en entrée : les villes, et les paramètres de l'algorithme RS à tester. 
+		// Retourne : - une liste des temps d'exécutions de l'algorithme à tester pour différentes tailles de problèmes.
+		// 			  - une liste de différents critères obtenus par l'algorithme à tester pour différentes tailles de problèmes.
 		
 		List<Double> Times = new ArrayList<Double>() ; 
 		List<Double> Criteres = new ArrayList <Double>() ;
 		Map<String,List<Double>> map = new HashMap(); // Les listes sont stockées dans une HashMap pour pouvoir être retournées.
-
 		
-		for (int i=4; i <= cities.size() ;i+=5) {
+		for (int i=1; i < cities.size() ;i++) {
 			double temps_moyen = 0;
 			double critere_moyen = 0;
 			
 			// On execute 10 fois l'algorithme pour chaque taille de problème à tester pour avoir une valeur moyenne de son temps d'execution et du critère trouvé :
 			for (int j =0 ; j<10 ; j++) {
 				ArrayList<City> cities_subset =  getSubset(cities,i);
-				SolutionTabou solution = new SolutionTabou(cities_subset, tailletabou, nbIterations);
-				solution.optimiserTabou();
-				Route s1 =  solution.getBestPath(); 
+				Route R = new Route(cities_subset);
+				SolutionRS solution = new SolutionRS(Temp, cooling_rate);
+				Route s1 =  solution.RS(R); 
 				critere_moyen += s1.getTotalDistance();
 				temps_moyen += solution.time_taken();
 			}
 			critere_moyen = critere_moyen/10; // critère moyen obtenu
-			temps_moyen = temps_moyen/10 * Math.pow(10, -6); // temps moyen obtenu
+			temps_moyen = temps_moyen/10 * Math.pow(10, -6); // temps moyen obtenu 
 			Times.add(temps_moyen);
 			Criteres.add(critere_moyen);
 		}
@@ -207,37 +210,38 @@ public class MainTestsTabou {
 		
 		return map ;
 	}
-
 	
-	public static ArrayList<City> getSubset(ArrayList<City> list,  int totalItems) { 
+	public static ArrayList<City> getSubset(ArrayList<City> list, int n) { 
 		// Permet de retourner une sous-liste de n villes à partir de la liste initiale de villes en entrée 
 		ArrayList<City> newList = new ArrayList<>(); 
-		for (int i = 1; i < totalItems; i++) { 
+		for (int i = 0; i < n; i++) { 
 			newList.add(list.get(i)); 
 		} 
 		return newList; 
 	} 
-	
-	
+
+
 	public static void main(String[] args) {
 		// Programme Main de testRS : 
-
+		
 		
 		ArrayList<City> cities = creationroute();
-		System.out.println("Vous êtes dans le test des paramètres de l'algorithme Tabou") ; 
-
+		System.out.println("Vous êtes dans le test des paramètres de l'algorithme RS") ; 
 		
-		/* 
-		i le nombre d'itérations dans la recherche tabou
-		j la longueur de la liste tabou
-		dans la fonction test on fait varier le nombre de villes prises en compte entre 4 et 74 par pas de 5
+		// Différents tests sont effectués : 
 		
-		*/
-		for (int i = 100 ; i < 500 ; i+=50) {
-			for (int j = 1 ; j < 6 ; j+=1) {
-				System.out.print("\n TailleTabou = "+j+" and nbIteration = "+i+" :" + test(cities, j , i));
-			}
+		for (double i = 100 ; i < 1100 ; i+=100) {
+			System.out.print("\n T_init =" + i +" and CoolingRate = :" + test(cities, i , 0.995));
 		}
+	
+		for (double i = 40 ; i < 170 ; i+=20) {
+			System.out.print("\n T_init =" + i +" and CoolingRate = :" + test(cities, i , 0.995));
+		}
+		
+		for (double j = 0.990 ; j < 1 ; j+=0.001) {
+			System.out.print("\n T_init = 60" +" and CoolingRate = :"+ j + test(cities, 60 , j));
+		}
+		
 		
 	}
 

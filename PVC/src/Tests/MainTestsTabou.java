@@ -1,3 +1,4 @@
+package Tests;
 
 import java.io.File;
 import java.net.InetAddress;
@@ -9,10 +10,15 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
 
-public class MainTestsAG {
-	
-	public static ArrayList<City> creationroute() {
+import Algorithmes.City;
+import Algorithmes.Route;
+import Algorithmes.SolutionTabou;
 
+
+public class MainTestsTabou {
+
+	public static ArrayList<City> creationroute() {
+		
 		// Création d'une liste contenant les villes suivantes :
 		City  Paris = new City ("Paris",48.86,2.34445);
 		City  Marseille = new City ("Marseille",43.2967,5.37639);
@@ -89,8 +95,7 @@ public class MainTestsAG {
 		City  Valence = new City ("Valence",44.9333,4.9);
 		City  Quimper = new City ("Quimper",48,-4.1);
 		City  Villeneuve_dAscq = new City ("Villeneuve-d'Ascq",50.6833,3.14167);
-
-		
+				
 		//creation chemin
 		ArrayList<City> cities = new ArrayList<City>();
 		cities.add(Paris);
@@ -168,47 +173,37 @@ public class MainTestsAG {
 		cities.add(Valence);
 		cities.add(Quimper);
 		cities.add(Villeneuve_dAscq);
+		
 		return cities;
 	}
-	
+
 	// Méthodes publiques : 
 	
-	public static Map<String,List<Double>> test(ArrayList<City> cities , int NUM_GENERATIONS , int POPULATION_Size) {
-		// Prend en entrée : les villes, et les paramètres de l'algorithme RS à tester. 
-		// Retourne : - une liste des temps d'exécutions de l'algorithme à tester pour différentes tailles de problèmes.
-		// 			  - une liste de différents critères obtenus par l'algorithme à tester pour différentes tailles de problèmes.
+	public static Map<String,List<Double>> test(ArrayList<City> cities , int tailletabou , int nbIterations) {
+		// Prend en entrée : les villes, et les paramètres de l'algorithme Tabou à tester. 
+				// Retourne : - une liste des temps d'exécutions de l'algorithme à tester pour différentes tailles de problèmes.
+				// 			  - une liste de différents critères obtenus par l'algorithme à tester pour différentes tailles de problèmes.
 		
 		List<Double> Times = new ArrayList<Double>() ; 
 		List<Double> Criteres = new ArrayList <Double>() ;
 		Map<String,List<Double>> map = new HashMap(); // Les listes sont stockées dans une HashMap pour pouvoir être retournées.
+
 		
-		for (int i=1; i < cities.size() ;i++) {
+		for (int i=4; i <= cities.size() ;i+=5) {
 			double temps_moyen = 0;
 			double critere_moyen = 0;
 			
 			// On execute 10 fois l'algorithme pour chaque taille de problème à tester pour avoir une valeur moyenne de son temps d'execution et du critère trouvé :
 			for (int j =0 ; j<10 ; j++) {
 				ArrayList<City> cities_subset =  getSubset(cities,i);
-				Route R = new Route(cities_subset);
-				SolutionAG.POPULATION_Size=POPULATION_Size;
-				SolutionAG.NUM_GENERATIONS=NUM_GENERATIONS;
-				Population population = new Population(SolutionAG.POPULATION_Size, R);
-				population.sortRouteByFitness();
-				SolutionAG ag = new SolutionAG(cities_subset);
-				double a =0; //initialisation du temps
-				int generationNumber = 1;
-
-					while (generationNumber < SolutionAG.NUM_GENERATIONS) {
-						generationNumber++;
-						population = ag.evolve(population);
-						population.sortRouteByFitness();
-						a += SolutionAG.getTime_taken();
-					}
-				critere_moyen += population.getRoutes().get(0).getTotalDistance();
-				temps_moyen += a;
+				SolutionTabou solution = new SolutionTabou(cities_subset, tailletabou, nbIterations);
+				solution.optimiserTabou();
+				Route s1 =  solution.getBestPath(); 
+				critere_moyen += s1.getTotalDistance();
+				temps_moyen += solution.time_taken();
 			}
 			critere_moyen = critere_moyen/10; // critère moyen obtenu
-			temps_moyen = temps_moyen/10 * Math.pow(10, -6); // temps moyen obtenu 
+			temps_moyen = temps_moyen/10 * Math.pow(10, -6); // temps moyen obtenu
 			Times.add(temps_moyen);
 			Criteres.add(critere_moyen);
 		}
@@ -218,34 +213,37 @@ public class MainTestsAG {
 		
 		return map ;
 	}
+
 	
-	public static ArrayList<City> getSubset(ArrayList<City> list, int n) { 
+	public static ArrayList<City> getSubset(ArrayList<City> list,  int totalItems) { 
 		// Permet de retourner une sous-liste de n villes à partir de la liste initiale de villes en entrée 
 		ArrayList<City> newList = new ArrayList<>(); 
-		for (int i = 0; i < n; i++) { 
+		for (int i = 1; i < totalItems; i++) { 
 			newList.add(list.get(i)); 
 		} 
 		return newList; 
 	} 
-
-
+	
+	
 	public static void main(String[] args) {
 		// Programme Main de testRS : 
-		
+
 		
 		ArrayList<City> cities = creationroute();
-		System.out.println("Vous êtes dans le test des paramètres de l'algorithme AG") ; 
+		System.out.println("Vous êtes dans le test des paramètres de l'algorithme Tabou") ; 
+
 		
-		// Différents tests sont effectués : 
+		/* 
+		i le nombre d'itérations dans la recherche tabou
+		j la longueur de la liste tabou
+		dans la fonction test on fait varier le nombre de villes prises en compte entre 4 et 74 par pas de 5
 		
-		for (int i = 1000 ; i < 3000 ; i+=100) {
-			System.out.print("\n Nombre de générations =" + i +" et taille de population = 8 :" + test(cities, i , 8));
+		*/
+		for (int i = 100 ; i < 500 ; i+=50) {
+			for (int j = 1 ; j < 6 ; j+=1) {
+				System.out.print("\n TailleTabou = "+j+" and nbIteration = "+i+" :" + test(cities, j , i));
+			}
 		}
-	
-		for (int i = 3 ; i < 11 ; i++) {
-			System.out.print("\n Nombre de générations = 1000 et taille de population  = " +i+ " : " + test(cities, 1000 , i));
-		}
-		
 		
 	}
 
