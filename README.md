@@ -1,7 +1,11 @@
 # ICO
 ICO_project
 
+Pour lancer le programme principale : fichier Main.
 
-Lien tuto Eclipse/Github ( pour push et pull les versions du projet ) : https://www.youtube.com/watch?v=LPT7v69guVY
+Pour lancer les des tests sur les paramètres des différents algorithmes : 
+- RS : MainTestsRS
+- Tabou : MainTestsTabou
+- Génétique : MainTestsAG
 
-RC inspiré de ce lien : https://www.codeflow.site/fr/article/java-simulated-annealing-for-traveling-salesman (marche pas encore mais compile). 
+Pour constituer un tableau ou un dataset : exécuter les fichier dataset.java ou table2.java.
